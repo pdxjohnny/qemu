@@ -800,7 +800,7 @@ static FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
             "kvm-asyncpf", "kvm-steal-time", "kvm-pv-eoi", "kvm-pv-unhalt",
             NULL, "kvm-pv-tlb-flush", NULL, "kvm-pv-ipi",
             "kvm-poll-control", "kvm-pv-sched-yield", "kvm-asyncpf-int", NULL,
-            NULL, NULL, NULL, NULL,
+            "kvm-cr-pin", NULL, NULL, NULL,
             NULL, NULL, NULL, NULL,
             "kvmclock-stable-bit", NULL, NULL, NULL,
             NULL, NULL, NULL, NULL,
@@ -4112,6 +4112,7 @@ static PropValue kvm_default_props[] = {
     { "kvm-asyncpf", "on" },
     { "kvm-steal-time", "on" },
     { "kvm-pv-eoi", "on" },
+    { "kvm-cr-pin", "on" },
     { "kvmclock-stable-bit", "on" },
     { "x2apic", "on" },
     { "acpi", "off" },
@@ -6978,6 +6979,7 @@ static void x86_cpu_initfn(Object *obj)
     object_property_add_alias(obj, "kvm_pv_eoi", obj, "kvm-pv-eoi");
     object_property_add_alias(obj, "kvm_pv_unhalt", obj, "kvm-pv-unhalt");
     object_property_add_alias(obj, "kvm_poll_control", obj, "kvm-poll-control");
+    object_property_add_alias(obj, "kvm_cr_pin", obj, "kvm-cr-pin");
     object_property_add_alias(obj, "svm_lock", obj, "svm-lock");
     object_property_add_alias(obj, "nrip_save", obj, "nrip-save");
     object_property_add_alias(obj, "tsc_scale", obj, "tsc-scale");
