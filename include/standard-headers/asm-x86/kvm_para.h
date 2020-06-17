@@ -31,6 +31,7 @@
 #define KVM_FEATURE_PV_SEND_IPI	11
 #define KVM_FEATURE_POLL_CONTROL	12
 #define KVM_FEATURE_PV_SCHED_YIELD	13
+#define KVM_FEATURE_CR_PIN		15
 
 #define KVM_HINTS_REALTIME      0
 
@@ -50,6 +51,10 @@
 #define MSR_KVM_STEAL_TIME  0x4b564d03
 #define MSR_KVM_PV_EOI_EN      0x4b564d04
 #define MSR_KVM_POLL_CONTROL	0x4b564d05
+#define MSR_KVM_CR0_PINNED_LOW	0x4b564d0a
+#define MSR_KVM_CR0_PINNED_HIGH	0x4b564d0b
+#define MSR_KVM_CR4_PINNED_LOW	0x4b564d0c
+#define MSR_KVM_CR4_PINNED_HIGH	0x4b564d0d
 
 struct kvm_steal_time {
 	uint64_t steal;
