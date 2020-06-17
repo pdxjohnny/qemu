@@ -408,6 +408,34 @@ static bool steal_time_msr_needed(void *opaque)
     return cpu->env.steal_time_msr != 0;
 }
 
+static bool cr0_pinned_low_msr_needed(void *opaque)
+{
+    X86CPU *cpu = opaque;
+
+    return cpu->env.cr0_pinned_low_msr != 0;
+}
+
+static bool cr0_pinned_high_msr_needed(void *opaque)
+{
+    X86CPU *cpu = opaque;
+
+    return cpu->env.cr0_pinned_high_msr != 0;
+}
+
+static bool cr4_pinned_low_msr_needed(void *opaque)
+{
+    X86CPU *cpu = opaque;
+
+    return cpu->env.cr4_pinned_low_msr != 0;
+}
+
+static bool cr4_pinned_high_msr_needed(void *opaque)
+{
+    X86CPU *cpu = opaque;
+
+    return cpu->env.cr4_pinned_high_msr != 0;
+}
+
 static bool exception_info_needed(void *opaque)
 {
     X86CPU *cpu = opaque;
@@ -452,6 +480,50 @@ static const VMStateDescription vmstate_steal_time_msr = {
     .needed = steal_time_msr_needed,
     .fields = (VMStateField[]) {
         VMSTATE_UINT64(env.steal_time_msr, X86CPU),
+        VMSTATE_END_OF_LIST()
+    }
+};
+
+static const VMStateDescription vmstate_cr0_pinned_low_msr = {
+    .name = "cpu/cr0_pinned_low_msr",
+    .version_id = 1,
+    .minimum_version_id = 1,
+    .needed = cr0_pinned_low_msr_needed,
+    .fields = (VMStateField[]) {
+        VMSTATE_UINT64(env.cr0_pinned_low_msr, X86CPU),
+        VMSTATE_END_OF_LIST()
+    }
+};
+
+static const VMStateDescription vmstate_cr0_pinned_high_msr = {
+    .name = "cpu/cr0_pinned_high_msr",
+    .version_id = 1,
+    .minimum_version_id = 1,
+    .needed = cr0_pinned_high_msr_needed,
+    .fields = (VMStateField[]) {
+        VMSTATE_UINT64(env.cr0_pinned_high_msr, X86CPU),
+        VMSTATE_END_OF_LIST()
+    }
+};
+
+static const VMStateDescription vmstate_cr4_pinned_low_msr = {
+    .name = "cpu/cr4_pinned_low_msr",
+    .version_id = 1,
+    .minimum_version_id = 1,
+    .needed = cr4_pinned_low_msr_needed,
+    .fields = (VMStateField[]) {
+        VMSTATE_UINT64(env.cr4_pinned_low_msr, X86CPU),
+        VMSTATE_END_OF_LIST()
+    }
+};
+
+static const VMStateDescription vmstate_cr4_pinned_high_msr = {
+    .name = "cpu/cr4_pinned_high_msr",
+    .version_id = 1,
+    .minimum_version_id = 1,
+    .needed = cr4_pinned_high_msr_needed,
+    .fields = (VMStateField[]) {
+        VMSTATE_UINT64(env.cr4_pinned_high_msr, X86CPU),
         VMSTATE_END_OF_LIST()
     }
 };
@@ -1440,6 +1512,10 @@ VMStateDescription vmstate_x86_cpu = {
         &vmstate_async_pf_msr,
         &vmstate_pv_eoi_msr,
         &vmstate_steal_time_msr,
+        &vmstate_cr0_pinned_low_msr,
+        &vmstate_cr0_pinned_high_msr,
+        &vmstate_cr4_pinned_low_msr,
+        &vmstate_cr4_pinned_high_msr,
         &vmstate_poll_control_msr,
         &vmstate_fpop_ip_dp,
         &vmstate_msr_tsc_adjust,
