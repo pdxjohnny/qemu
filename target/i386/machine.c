@@ -415,6 +415,48 @@ static bool steal_time_msr_needed(void *opaque)
     return cpu->env.steal_time_msr != 0;
 }
 
+static bool cr0_pin_allowed_msr_needed(void *opaque)
+{
+    X86CPU *cpu = opaque;
+
+    return cpu->env.cr0_pin_allowed_msr != 0;
+}
+
+static bool cr4_pin_allowed_msr_needed(void *opaque)
+{
+    X86CPU *cpu = opaque;
+
+    return cpu->env.cr4_pin_allowed_msr != 0;
+}
+
+static bool cr0_pinned_zero_msr_needed(void *opaque)
+{
+    X86CPU *cpu = opaque;
+
+    return cpu->env.cr0_pinned_zero_msr != 0;
+}
+
+static bool cr0_pinned_one_msr_needed(void *opaque)
+{
+    X86CPU *cpu = opaque;
+
+    return cpu->env.cr0_pinned_one_msr != 0;
+}
+
+static bool cr4_pinned_zero_msr_needed(void *opaque)
+{
+    X86CPU *cpu = opaque;
+
+    return cpu->env.cr4_pinned_zero_msr != 0;
+}
+
+static bool cr4_pinned_one_msr_needed(void *opaque)
+{
+    X86CPU *cpu = opaque;
+
+    return cpu->env.cr4_pinned_one_msr != 0;
+}
+
 static bool exception_info_needed(void *opaque)
 {
     X86CPU *cpu = opaque;
@@ -459,6 +501,72 @@ static const VMStateDescription vmstate_steal_time_msr = {
     .needed = steal_time_msr_needed,
     .fields = (VMStateField[]) {
         VMSTATE_UINT64(env.steal_time_msr, X86CPU),
+        VMSTATE_END_OF_LIST()
+    }
+};
+
+static const VMStateDescription vmstate_cr0_pin_allowed_msr = {
+    .name = "cpu/cr0_pin_allowed_msr",
+    .version_id = 1,
+    .minimum_version_id = 1,
+    .needed = cr0_pin_allowed_msr_needed,
+    .fields = (VMStateField[]) {
+        VMSTATE_UINT64(env.cr0_pin_allowed_msr, X86CPU),
+        VMSTATE_END_OF_LIST()
+    }
+};
+
+static const VMStateDescription vmstate_cr4_pin_allowed_msr = {
+    .name = "cpu/cr4_pin_allowed_msr",
+    .version_id = 1,
+    .minimum_version_id = 1,
+    .needed = cr4_pin_allowed_msr_needed,
+    .fields = (VMStateField[]) {
+        VMSTATE_UINT64(env.cr4_pin_allowed_msr, X86CPU),
+        VMSTATE_END_OF_LIST()
+    }
+};
+
+static const VMStateDescription vmstate_cr0_pinned_zero_msr = {
+    .name = "cpu/cr0_pinned_zero_msr",
+    .version_id = 1,
+    .minimum_version_id = 1,
+    .needed = cr0_pinned_zero_msr_needed,
+    .fields = (VMStateField[]) {
+        VMSTATE_UINT64(env.cr0_pinned_zero_msr, X86CPU),
+        VMSTATE_END_OF_LIST()
+    }
+};
+
+static const VMStateDescription vmstate_cr0_pinned_one_msr = {
+    .name = "cpu/cr0_pinned_one_msr",
+    .version_id = 1,
+    .minimum_version_id = 1,
+    .needed = cr0_pinned_one_msr_needed,
+    .fields = (VMStateField[]) {
+        VMSTATE_UINT64(env.cr0_pinned_one_msr, X86CPU),
+        VMSTATE_END_OF_LIST()
+    }
+};
+
+static const VMStateDescription vmstate_cr4_pinned_zero_msr = {
+    .name = "cpu/cr4_pinned_zero_msr",
+    .version_id = 1,
+    .minimum_version_id = 1,
+    .needed = cr4_pinned_zero_msr_needed,
+    .fields = (VMStateField[]) {
+        VMSTATE_UINT64(env.cr4_pinned_zero_msr, X86CPU),
+        VMSTATE_END_OF_LIST()
+    }
+};
+
+static const VMStateDescription vmstate_cr4_pinned_one_msr = {
+    .name = "cpu/cr4_pinned_one_msr",
+    .version_id = 1,
+    .minimum_version_id = 1,
+    .needed = cr4_pinned_one_msr_needed,
+    .fields = (VMStateField[]) {
+        VMSTATE_UINT64(env.cr4_pinned_one_msr, X86CPU),
         VMSTATE_END_OF_LIST()
     }
 };
@@ -1459,6 +1567,12 @@ VMStateDescription vmstate_x86_cpu = {
         &vmstate_async_pf_int_msr,
         &vmstate_pv_eoi_msr,
         &vmstate_steal_time_msr,
+        &vmstate_cr0_pin_allowed_msr,
+        &vmstate_cr4_pin_allowed_msr,
+        &vmstate_cr0_pinned_zero_msr,
+        &vmstate_cr0_pinned_one_msr,
+        &vmstate_cr4_pinned_zero_msr,
+        &vmstate_cr4_pinned_one_msr,
         &vmstate_poll_control_msr,
         &vmstate_fpop_ip_dp,
         &vmstate_msr_tsc_adjust,

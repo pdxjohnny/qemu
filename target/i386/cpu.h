@@ -1495,6 +1495,12 @@ typedef struct CPUX86State {
     uint64_t async_pf_int_msr;
     uint64_t pv_eoi_en_msr;
     uint64_t poll_control_msr;
+    uint64_t cr0_pin_allowed;
+    uint64_t cr4_pin_allowed;
+    uint64_t cr0_pinned_zero_msr;
+    uint64_t cr0_pinned_one_msr;
+    uint64_t cr4_pinned_zero_msr;
+    uint64_t cr4_pinned_one_msr;
 
     /* Partition-wide HV MSRs, will be updated only on the first vcpu */
     uint64_t msr_hv_hypercall;

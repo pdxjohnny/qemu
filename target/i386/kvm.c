@@ -2815,6 +2815,14 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
         if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_STEAL_TIME)) {
             kvm_msr_entry_add(cpu, MSR_KVM_STEAL_TIME, env->steal_time_msr);
         }
+        if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_CR_PIN)) {
+            kvm_msr_entry_add(cpu, MSR_KVM_CR0_PIN_ALLOWED, env->cr0_pin_allowed_msr);
+            kvm_msr_entry_add(cpu, MSR_KVM_CR4_PIN_ALLOWED, env->cr4_pin_allowed_msr);
+            kvm_msr_entry_add(cpu, MSR_KVM_CR0_PINNED_ZERO, env->cr0_pinned_zero_msr);
+            kvm_msr_entry_add(cpu, MSR_KVM_CR0_PINNED_ONE, env->cr0_pinned_one_msr);
+            kvm_msr_entry_add(cpu, MSR_KVM_CR4_PINNED_ZERO, env->cr4_pinned_zero_msr);
+            kvm_msr_entry_add(cpu, MSR_KVM_CR4_PINNED_ONE, env->cr4_pinned_one_msr);
+        }
 
         if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_POLL_CONTROL)) {
             kvm_msr_entry_add(cpu, MSR_KVM_POLL_CONTROL, env->poll_control_msr);
@@ -3203,6 +3211,14 @@ static int kvm_get_msrs(X86CPU *cpu)
     if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_STEAL_TIME)) {
         kvm_msr_entry_add(cpu, MSR_KVM_STEAL_TIME, 0);
     }
+    if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_CR_PIN)) {
+        kvm_msr_entry_add(cpu, MSR_KVM_CR0_PIN_ALLOWED, 0);
+        kvm_msr_entry_add(cpu, MSR_KVM_CR4_PIN_ALLOWED, 0);
+        kvm_msr_entry_add(cpu, MSR_KVM_CR0_PINNED_ZERO, 0);
+        kvm_msr_entry_add(cpu, MSR_KVM_CR0_PINNED_ONE, 0);
+        kvm_msr_entry_add(cpu, MSR_KVM_CR4_PINNED_ZERO, 0);
+        kvm_msr_entry_add(cpu, MSR_KVM_CR4_PINNED_ONE, 0);
+    }
     if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_POLL_CONTROL)) {
         kvm_msr_entry_add(cpu, MSR_KVM_POLL_CONTROL, 1);
     }
@@ -3445,6 +3461,24 @@ static int kvm_get_msrs(X86CPU *cpu)
             break;
         case MSR_KVM_STEAL_TIME:
             env->steal_time_msr = msrs[i].data;
+            break;
+        case MSR_KVM_CR0_PIN_ALLOWED:
+            env->cr0_pin_allowed_msr = msrs[i].data;
+            break;
+        case MSR_KVM_CR4_PIN_ALLOWED:
+            env->cr4_pin_allowed_msr = msrs[i].data;
+            break;
+        case MSR_KVM_CR0_PINNED_ZERO:
+            env->cr0_pinned_zero_msr = msrs[i].data;
+            break;
+        case MSR_KVM_CR0_PINNED_ONE:
+            env->cr0_pinned_one_msr = msrs[i].data;
+            break;
+        case MSR_KVM_CR4_PINNED_ZERO:
+            env->cr4_pinned_zero_msr = msrs[i].data;
+            break;
+        case MSR_KVM_CR4_PINNED_ONE:
+            env->cr4_pinned_one_msr = msrs[i].data;
             break;
         case MSR_KVM_POLL_CONTROL: {
             env->poll_control_msr = msrs[i].data;
